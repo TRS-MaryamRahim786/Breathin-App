@@ -1,6 +1,7 @@
 import 'package:breathin_app/routes/routes.dart';
 import 'package:breathin_app/screens/auth/login/view/login_screen.dart';
 import 'package:breathin_app/screens/home/view/dashboard_screen.dart';
+import 'package:breathin_app/screens/landing_page/view/landing_screen.dart';
 import 'package:breathin_app/screens/language/view/language_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,14 @@ class MyAppRouter {
 
   GoRouter get router => _router;
   late final GoRouter _router =
-      GoRouter(initialLocation: Routes.language, routes: <RouteBase>[
+      GoRouter(initialLocation: Routes.landing, routes: <RouteBase>[
+    GoRoute(
+      path: Routes.landing,
+      name: Routes.landing,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return const MaterialPage(child: LandindScreen());
+      },
+    ),
     GoRoute(
       path: Routes.language,
       name: Routes.language,
@@ -59,7 +67,7 @@ class MyAppRouter {
         return MaterialPage(
           child: MultiBlocProvider(
             providers: [
-              BlocProvider(create: (_) => HomeBloc()),
+              BlocProvider(create: (_) => HomeBloc(FirebaseAuthService())),
             ],
             child: DashboardScreen(),
           ),

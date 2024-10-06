@@ -6,11 +6,19 @@ import 'package:breathin_app/utilities/helpers/colors.dart';
 import 'package:breathin_app/utilities/helpers/constants.dart';
 import 'package:breathin_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../bloc/home_bloc.dart';
+
 class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    /// HOME BLOC PROVIDER
+    final homeBlocProvider = BlocProvider.of<HomeBloc>(context);
+
     ///========= [Responsive Screen Size]
     screenSize = MediaQuery.sizeOf(context);
     final width = screenSize.width;
@@ -28,8 +36,6 @@ class DashboardScreen extends StatelessWidget {
             letterSpacing: 1.5,
             maxLines: 3,
             height: 32 / 20,
-            // Line height (34.4px) divided by font size (24px)
-
             textAlign: TextAlign.left,
           ),
           actions: [
@@ -38,11 +44,20 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 SvgPicture.asset(AppAssets.chatCounter),
                 context.sizeBoxWidth(0.03),
+                SvgPicture.asset(AppAssets.bellCounter),
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: width * 0.01, right: width * 0.03),
-                  child: SvgPicture.asset(AppAssets.bellCounter),
-                )
+                    padding: EdgeInsets.only(
+                        left: width * 0.01, right: width * 0.01),
+                    child: IconButton(
+                      onPressed: () {
+                        homeBlocProvider
+                            .add(HomeSignOutEvent(context: context));
+                      },
+                      icon: const Icon(
+                        Icons.logout,
+                        color: AppColors.grey,
+                      ),
+                    ))
               ],
             )
           ],
@@ -50,20 +65,44 @@ class DashboardScreen extends StatelessWidget {
         body: const TabBarView(
           children: [
             Center(child: HomeScreen()),
-            Center(child: Text('Content for Tab 2')),
-            Center(child: Text('Content for Tab 3')),
+            Center(
+              child: CustomText(
+                text: 'Explore',
+                color: AppColors.black,
+                fontSize: 24.5,
+                fontFamily: AppFonts.raglika,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 1.5,
+                maxLines: 3,
+                height: 32 / 20,
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Center(
+              child: CustomText(
+                text: 'Profile',
+                color: AppColors.black,
+                fontSize: 24.5,
+                fontFamily: AppFonts.raglika,
+                fontWeight: FontWeight.w400,
+                letterSpacing: 1.5,
+                maxLines: 3,
+                height: 32 / 20,
+                textAlign: TextAlign.left,
+              ),
+            ),
           ],
         ),
         bottomNavigationBar: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: EdgeInsets.symmetric(vertical: height * 0.01),
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
               color: AppColors.white),
           child: TabBar(
             indicatorColor:
                 Colors.white, // Color of the tab indicator (underline)
-            unselectedLabelColor: Colors.amber,
+            dividerColor: Colors.white,
             tabs: [
               Tab(icon: SvgPicture.asset(AppAssets.homeIcon)),
               Tab(icon: SvgPicture.asset(AppAssets.explore)),

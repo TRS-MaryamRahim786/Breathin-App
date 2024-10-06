@@ -1,15 +1,19 @@
 class FeaturedItem {
-  final String title;
-  final String time;
-  final String category;
-  final String imageUrl;
-  bool isFavorite;
+  final String name;
+  final String duration;
+  final String type;
+  final String imageLink;
+  final String musicLink;
+  late final bool isFavorite;
+  final String keyValue;
 
   FeaturedItem({
-    required this.title,
-    required this.time,
-    required this.category,
-    required this.imageUrl,
+    required this.name,
+    required this.duration,
+    required this.type,
+    required this.imageLink,
+    required this.musicLink,
+    required this.keyValue,
     this.isFavorite = false,
   });
 }

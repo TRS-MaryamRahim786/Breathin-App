@@ -29,13 +29,6 @@ class LanguageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SharedPrefService.instance.getIsUserLogin().then((value) {
-      if (value) {
-        context.go(Routes.home);
-      } else {
-        context.go(Routes.login);
-      }
-    });
     final languageBlocProvider = BlocProvider.of<LanguageBloc>(context);
     languageBlocProvider.add(LanguageInitialEvent(
         defaultLanguage: languageBlocProvider.languages.first));
@@ -79,29 +72,7 @@ class LanguageScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomText(
-                text: 'Choose the language',
-                color: AppColors.black,
-                fontSize: 24.5,
-                fontFamily: AppFonts.raglika,
-                fontWeight: FontWeight.normal,
-                letterSpacing: 1.5,
-                maxLines: 3,
-                textAlign: TextAlign.left,
-              ),
-              context.sizeBoxHeight(0.01),
-              const CustomText(
-                text:
-                    'Please select your language, you can always change your preference in settings.',
-                color: AppColors.grey157,
-                fontSize: 16,
-                fontFamily: AppFonts.helvetica,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1,
-                maxLines: 3,
-                textAlign: TextAlign.left,
-              ),
-              context.sizeBoxHeight(0.02),
+              _header(context),
               TextFormField(
                 focusNode: languageBlocProvider.focusNode,
                 controller: languageBlocProvider.languageController,
@@ -202,26 +173,60 @@ class LanguageScreen extends StatelessWidget {
                   },
                 ),
               ),
-              CustomButton(
-                btnName: 'Continue',
-                textStyle: const TextStyle(
-                    color: AppColors.black,
-                    fontFamily: AppFonts.helvetica,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1),
-                btnColor: AppColors.buttonColor,
-                onTap: () {
-                  context.pushNamed(Routes.login,
-                      extra: languageBlocProvider.selectedLanguage?.name);
-                },
-                btnRadius: 14,
-              ),
               context.sizeBoxHeight(0.04)
             ],
           ),
         ),
       ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(
+            vertical: height * 0.02, horizontal: width * 0.05),
+        child: CustomButton(
+          btnName: 'Continue',
+          textStyle: const TextStyle(
+              color: AppColors.black,
+              fontFamily: AppFonts.helvetica,
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1),
+          btnColor: AppColors.buttonColor,
+          onTap: () {
+            context.pushNamed(Routes.login,
+                extra: languageBlocProvider.selectedLanguage?.name);
+          },
+          btnRadius: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _header(BuildContext context) {
+    return Column(
+      children: [
+        const CustomText(
+          text: 'Choose the language',
+          color: AppColors.black,
+          fontSize: 24.5,
+          fontFamily: AppFonts.raglika,
+          fontWeight: FontWeight.normal,
+          letterSpacing: 1.5,
+          maxLines: 3,
+          textAlign: TextAlign.left,
+        ),
+        context.sizeBoxHeight(0.01),
+        const CustomText(
+          text:
+              'Please select your language, you can always change your preference in settings.',
+          color: AppColors.grey157,
+          fontSize: 16,
+          fontFamily: AppFonts.helvetica,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 1,
+          maxLines: 3,
+          textAlign: TextAlign.left,
+        ),
+        context.sizeBoxHeight(0.02),
+      ],
     );
   }
 }

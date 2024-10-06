@@ -22,7 +22,8 @@ import '../bloc/login_bloc.dart';
 import '../cubits/terms_cubit.dart';
 
 class AuthScreen extends StatefulWidget {
-  const AuthScreen({super.key, required String language});
+  AuthScreen({super.key, required this.language});
+  final String language;
 
   @override
   State<AuthScreen> createState() => _AuthScreenState();
@@ -283,6 +284,7 @@ class _AuthScreenState extends State<AuthScreen> {
             context.sizeBoxHeight(0.03),
             CustomButton(
               btnName: 'Sign in with Google',
+              btnBoxBorder: Border.all(color: AppColors.black, width: 1),
               textStyle: const TextStyle(
                   color: AppColors.black,
                   fontFamily: AppFonts.helvetica,

@@ -21,4 +21,6 @@ abstract class AppAssets {
 
   /// ============================ [ Images ]
   static const homeBg = 'assets/images/home.jpeg';
+  static const landingBg = 'assets/images/landing_bg.jpeg';
+  static const imageReplaceHolder = 'assets/images/image_replaceholder.png';
 }

@@ -9,7 +9,6 @@ class FirebaseAuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Register user with email and password
-
   Future<void> registerUser(UserModel user) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
       email: user.email,
@@ -23,10 +22,28 @@ class FirebaseAuthService {
 
   // Method to login user
   Future<void> loginUser(UserModel user) async {
-    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
-    );
+    try {
+      // Attempt to log the user in using email and password
+      await _auth.signInWithEmailAndPassword(
+        email: user.email,
+        password: user.password,
+      );
+    } on FirebaseAuthException catch (e) {
+      // Check for specific error codes from FirebaseAuthException
+      if (e.code == 'wrong-password' || e.code == 'invalid-credential') {
+        // Handle wrong password case
+        throw 'Invalid credentials. Please check your password.';
+      } else if (e.code == 'user-not-found') {
+        // Handle user not found case
+        throw 'No user found with this email.';
+      } else {
+        // Throw any other FirebaseAuth related errors
+        throw e.message ?? 'Authentication failed.';
+      }
+    } catch (e) {
+      // Catch any other exceptions (non-Firebase)
+      throw 'An unexpected error occurred. Please try again.';
+    }
   }
 
   // Check if the user is already registered
@@ -49,6 +66,19 @@ class FirebaseAuthService {
     } catch (e) {
       debugPrint(e.toString());
       return isUserRegistered;
+    }
+  }
+
+  // Method to sign out the user
+  Future<void> signOut() async {
+    try {
+      // Sign the user out from Firebase Auth
+      await _auth.signOut();
+      print("User signed out successfully.");
+    } catch (e) {
+      // Handle any errors during sign-out
+      print("Error during sign-out: $e");
+      throw 'Sign out failed. Please try again.';
     }
   }
 }

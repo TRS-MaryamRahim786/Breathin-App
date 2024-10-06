@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:breathin_app/firebase_options.dart';
 import 'package:breathin_app/lang/codegen_loader.g.dart';
 import 'package:breathin_app/services/shared-pref/shared-pref-service.dart';
+import 'package:breathin_app/utilities/helpers/colors.dart';
 import 'package:breathin_app/utilities/helpers/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'app.dart';
 
@@ -27,6 +29,12 @@ void main() async {
       "Failed to initialize Firebase: $e",
     );
   }
+
+  /// Sets the color of the navigation bar to white
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: AppColors.white,
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
 
   runApp(EasyLocalization(
     path: 'assets/lang',

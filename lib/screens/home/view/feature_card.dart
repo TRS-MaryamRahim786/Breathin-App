@@ -1,5 +1,8 @@
+import 'package:breathin_app/utilities/helpers/app_assets.dart';
+import 'package:breathin_app/widgets/custom_image_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../utilities/helpers/app_fonts.dart';
 import '../../../utilities/helpers/colors.dart';
@@ -30,57 +33,71 @@ class FeaturedCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          width: width * 0.39, // Width of each card
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            color: AppColors.white,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.greyDivider.withOpacity(0.5),
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: Offset(0, 1),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      'https://images.unsplash.com/photo-1560193327-e52dafa295f4?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                      width: width * 1,
-                      // height: height * 0.4,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    top: height * 0.0,
-                    right: width * 0.01,
-                    child: IconButton(
-                      icon: Icon(
-                        item.isFavorite
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color:
-                            item.isFavorite ? AppColors.red : AppColors.black,
+        GestureDetector(
+          onTap: () {
+            homeBlocProvider.playAudio(item.musicLink);
+          },
+          child: Container(
+            width: width * 0.39, // Width of each card
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: AppColors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.greyDivider.withOpacity(0.5),
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    SizedBox(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: FutureBuilder(
+                            future:
+                                homeBlocProvider.getImageUrl(item.imageLink),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return CustomImageWidget(
+                                  imageUrl: snapshot.data.toString(),
+                                  width: width * 1,
+                                  height: height * 0.13,
+                                );
+                              }
+                              return Image.asset(AppAssets.imageReplaceHolder);
+                            }),
                       ),
-                      onPressed: onFavoriteToggle,
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    Positioned(
+                      top: height * 0.0,
+                      right: width * 0.01,
+                      child: IconButton(
+                        icon: Icon(
+                          item.isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color:
+                              item.isFavorite ? AppColors.red : AppColors.black,
+                        ),
+                        onPressed: onFavoriteToggle,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 4.0, top: 6),
           child: CustomText(
-            text: item.title,
+            text: item.name,
             color: AppColors.black,
             fontSize: 14,
             fontFamily: AppFonts.raglika,
@@ -94,7 +111,7 @@ class FeaturedCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 4.0, top: 4),
           child: CustomText(
-            text: '${item.time} • ${item.category}',
+            text: '${item.duration} • ${item.type}',
             color: AppColors.black,
             fontSize: 12,
             fontFamily: AppFonts.raglika,

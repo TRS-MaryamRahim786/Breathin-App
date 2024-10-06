@@ -1,7 +1,12 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
+import 'package:breathin_app/routes/routes.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../services/firebase/firebase_auth.dart';
+import '../../../services/shared-pref/shared-pref-service.dart';
 import '../model/item_model.dart';
 
 part 'home_event.dart';
@@ -10,43 +15,53 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   TextEditingController homeSearchBarController = TextEditingController();
   final FocusNode focusNode = FocusNode();
+  AudioPlayer _audioPlayer = AudioPlayer();
+  final FirebaseAuthService authService;
 
-  // Your featured item data
-  final List<FeaturedItem> featuredItems = [
-    FeaturedItem(
-        title: 'Drift Off',
-        time: '10 mins',
-        category: 'Sleep',
-        imageUrl:
-            'https://images.unsplash.com/photo-1560193327-e52dafa295f4?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'),
-    FeaturedItem(
-        title: 'Calm',
-        time: '05 mins',
-        category: 'Sleep',
-        imageUrl: 'https://example.com/image2.jpg'),
-    FeaturedItem(
-        title: 'Breath',
-        time: '03 mins',
-        category: 'Sleep',
-        imageUrl: 'https://example.com/image3.jpg'),
-    FeaturedItem(
-        title: 'Calm',
-        time: '05 mins',
-        category: 'Sleep',
-        imageUrl: 'https://example.com/image2.jpg'),
-    FeaturedItem(
-        title: 'Breath',
-        time: '03 mins',
-        category: 'Sleep',
-        imageUrl: 'https://example.com/image3.jpg'),
-  ];
+  HomeBloc(this.authService) : super(HomeInitialState()) {
+    on<HomeSignOutEvent>((event, emit) {
+      authService.signOut();
 
-  HomeBloc() : super(HomeInitialState()) {
-    on<HomeItemFavouriteEvent>((event, emit) {
-      event.featuredItem.isFavorite = !event.featuredItem.isFavorite;
-      event.featuredItem;
-      emit(HomeUpdateItemState());
-      // TODO: implement event handler
+      _navigateTolanguageScreen(event.context);
+      SharedPrefService.instance.setIsUserLogin(false);
     });
+  }
+
+  Future<String> getImageUrl(String filePath) async {
+    // Replace 'filePath' with the full path to your image in Firebase Storage
+    String path = '';
+    try {
+      Reference ref = FirebaseStorage.instance.refFromURL(filePath);
+      path = await ref.getDownloadURL();
+    } catch (e) {
+      print('Error occurred: $e');
+    }
+    return path;
+  }
+
+  playAudio(String audioLink) async {
+    if (_audioPlayer.state == PlayerState.playing) {
+      _audioPlayer.stop();
+    }
+    String link = await getImageUrl(audioLink);
+    _audioPlayer.play(UrlSource(link));
+  }
+
+  Future<void> _pauseAudio() async {
+    await _audioPlayer.pause();
+  }
+
+  Future<void> _stopAudio() async {
+    await _audioPlayer.stop();
+  }
+
+  @override
+  Future<void> close() {
+    _audioPlayer.dispose();
+    return super.close();
+  }
+
+  void _navigateTolanguageScreen(BuildContext context) {
+    context.go(Routes.landing);
   }
 }

@@ -25,7 +25,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   GlobalKey<FormState> authKey = GlobalKey<FormState>();
 
   final FirebaseAuthService authService;
-  // final FirestoreService? fireStoreService;
 
   /// Password Toggle
   void togglePasswordVisibility() {
@@ -42,17 +41,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       if (authKey.currentState!.validate()) {
         if (event.isTermsAndConditionAccepted) {
           if (connectivityResult != ConnectivityResult.none) {
+            emit(AuthLoadingState());
             try {
               // Check if user is registered
-
               bool isRegistered =
                   await authService.isUserRegistered(event.user.email);
 
               if (isRegistered) {
-                // Login the user
+                /// Login the user
                 await authService.loginUser(event.user);
               } else {
-                // Register the user
+                /// Register the user
                 await authService.registerUser(event.user);
               }
               if (event.context.mounted) {
