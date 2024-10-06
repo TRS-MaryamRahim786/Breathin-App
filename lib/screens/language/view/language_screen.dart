@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../services/shared-pref/shared-pref-service.dart';
 import '../model/language_model.dart';
 
 class LanguageScreen extends StatelessWidget {
@@ -28,6 +29,13 @@ class LanguageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SharedPrefService.instance.getIsUserLogin().then((value) {
+      if (value) {
+        context.go(Routes.home);
+      } else {
+        context.go(Routes.login);
+      }
+    });
     final languageBlocProvider = BlocProvider.of<LanguageBloc>(context);
     languageBlocProvider.add(LanguageInitialEvent(
         defaultLanguage: languageBlocProvider.languages.first));

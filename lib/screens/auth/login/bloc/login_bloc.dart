@@ -1,6 +1,7 @@
 import 'package:breathin_app/routes/routes.dart';
 import 'package:breathin_app/services/firebase/firebase_auth.dart';
 import 'package:breathin_app/services/firebase/firestore_base_service.dart';
+import 'package:breathin_app/services/shared-pref/shared-pref-service.dart';
 import 'package:breathin_app/widgets/custom_snackBar.dart';
 import 'package:breathin_app/widgets/no_internet_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -55,10 +56,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 await authService.registerUser(event.user);
               }
               if (event.context.mounted) {
+                SharedPrefService.instance.setIsUserLogin(true);
                 _navigateToHome(event.context);
               }
             } catch (e) {
               print("e: $e");
+              SharedPrefService.instance.setIsUserLogin(false);
               emit(AuthFailureState(error: e.toString()));
             }
           } else {

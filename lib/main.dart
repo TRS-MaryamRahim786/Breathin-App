@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:breathin_app/firebase_options.dart';
 import 'package:breathin_app/lang/codegen_loader.g.dart';
+import 'package:breathin_app/services/shared-pref/shared-pref-service.dart';
 import 'package:breathin_app/utilities/helpers/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,6 +27,7 @@ void main() async {
       "Failed to initialize Firebase: $e",
     );
   }
+
   runApp(EasyLocalization(
     path: 'assets/lang',
     supportedLocales: const [

@@ -23,7 +23,7 @@ class FirebaseAuthService {
 
   // Method to login user
   Future<void> loginUser(UserModel user) async {
-    await _auth.signInWithEmailAndPassword(
+    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
       email: user.email,
       password: user.password,
     );

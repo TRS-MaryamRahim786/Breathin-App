@@ -26,6 +26,7 @@ abstract class AppColors {
   static const Color greyDivider = Color(0xFFE0E0E0); // Divider Grey
   static const Color grey157 = Color(0xFF9D9D9D);
   static const Color divider = Color(0xFFFFFFB2);
+  static const Color grey = Color(0xFF9D9D9D);
 
 // Neutral Colors
 

@@ -17,6 +17,7 @@ abstract class AppAssets {
   static const eye = 'assets/icons/eye.svg';
   static const favourite = 'assets/icons/favourite.svg';
   static const profile = 'assets/icons/profile.svg';
+  static const homeIcon = 'assets/icons/home_icon.svg';
 
   /// ============================ [ Images ]
   static const homeBg = 'assets/images/home.jpeg';

@@ -1,10 +1,9 @@
 import 'package:breathin_app/utilities/helpers/app_fonts.dart';
 import 'package:breathin_app/utilities/helpers/colors.dart';
+import 'package:breathin_app/utilities/helpers/constants.dart';
 import 'package:breathin_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../utilities/helpers/app_colors.dart';
 
 // ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
@@ -177,20 +176,30 @@ class CustomTextField extends StatelessWidget {
 
 /// Search Text Field
 class SearchTextField extends StatelessWidget {
-  const SearchTextField(
+  SearchTextField(
       {super.key,
       required this.controller,
       required this.onChanged,
       required this.onClear,
-      this.onFieldSubmitted});
+      this.onFieldSubmitted,
+      required this.focusBorderColor,
+      required this.title,
+      required this.titleColor});
 
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
   final ValueChanged<String>? onFieldSubmitted;
   final Function()? onClear;
+  Color? focusBorderColor = AppColors.grey157;
+  Color? titleColor = AppColors.grey157;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
+    ///========= [Responsive Screen Size]
+    screenSize = MediaQuery.sizeOf(context);
+    final width = screenSize.width;
+    final height = screenSize.height;
     return SizedBox(
       height: 46,
       child: TextFormField(
@@ -200,31 +209,26 @@ class SearchTextField extends StatelessWidget {
         cursorColor: AppColors.black,
         decoration: InputDecoration(
             enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.grey157)),
-            focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: AppColors.grey157)),
-            hintText: "Search",
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
-            prefixIcon: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 3.0),
-              child: Icon(
+                borderSide: BorderSide(color: AppColors.white)),
+            focusedBorder: OutlineInputBorder(
+                borderSide:
+                    BorderSide(color: focusBorderColor ?? AppColors.grey157)),
+            border: const OutlineInputBorder(
+                borderSide: BorderSide(color: AppColors.greyDivider, width: 1)),
+            hintText: title,
+            hintStyle:
+                TextStyle(color: titleColor ?? AppColors.red, fontSize: 18.5),
+            prefixIcon: Container(
+              constraints: BoxConstraints(maxWidth: width * 0.02),
+              // color: AppColors.primary,
+              // height: height * 0.002,
+              // width: width * 0.002,
+              child: const Icon(
                 Icons.search,
-                color: AppColors.greyDivider,
-                size: 24,
+                color: AppColors.darkGrey60,
+                size: 32,
               ),
-            ),
-            suffixIcon: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 6.0, horizontal: 2.0),
-                child: InkWell(
-                    onTap: onClear,
-                    child: const Icon(
-                      Icons.highlight_remove,
-                      size: 24,
-                      color: AppColors.greyDivider,
-                    ))),
-            border: const OutlineInputBorder()),
+            )),
       ),
     );
   }

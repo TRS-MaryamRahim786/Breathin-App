@@ -1,5 +1,6 @@
 import 'package:breathin_app/routes/routes.dart';
 import 'package:breathin_app/screens/auth/login/view/login_screen.dart';
+import 'package:breathin_app/screens/home/view/dashboard_screen.dart';
 import 'package:breathin_app/screens/language/view/language_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +8,10 @@ import 'package:go_router/go_router.dart';
 
 import '../screens/auth/login/bloc/login_bloc.dart';
 import '../screens/auth/login/cubits/terms_cubit.dart';
+import '../screens/home/bloc/home_bloc.dart';
 import '../screens/language/bloc/language_bloc.dart';
 import '../services/firebase/firebase_auth.dart';
+import '../services/shared-pref/shared-pref-service.dart';
 
 class MyAppRouter {
   MyAppRouter._();
@@ -35,7 +38,7 @@ class MyAppRouter {
       path: Routes.login,
       name: Routes.login,
       pageBuilder: (BuildContext context, GoRouterState state) {
-        String selectedLanguage = state.extra as String;
+        String selectedLanguage = state.extra.toString();
         return MaterialPage(
           child: MultiBlocProvider(
             providers: [
@@ -45,6 +48,20 @@ class MyAppRouter {
               BlocProvider(create: (_) => LanguageBloc()),
             ],
             child: AuthScreen(language: selectedLanguage),
+          ),
+        );
+      },
+    ),
+    GoRoute(
+      path: Routes.home,
+      name: Routes.home,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return MaterialPage(
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => HomeBloc()),
+            ],
+            child: DashboardScreen(),
           ),
         );
       },
