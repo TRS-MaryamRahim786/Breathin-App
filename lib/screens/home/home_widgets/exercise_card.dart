@@ -82,7 +82,6 @@ class ExerciseCard extends StatelessWidget {
             );
           }
           return const Center(child: SizedBox());
-
         },
       ),
     );
