@@ -1,4 +1,6 @@
+import 'package:breathin_app/utilities/helpers/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void showNoInternetDialog(BuildContext context) {
   showDialog(
@@ -30,10 +32,10 @@ void showNoInternetDialog(BuildContext context) {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
           child: const Text(
             "Try Again",
-            style: TextStyle(color: Colors.blue),
+            style: TextStyle(color: AppColors.black),
           ),
         ),
       ],

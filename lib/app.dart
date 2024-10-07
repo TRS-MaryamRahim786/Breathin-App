@@ -1,14 +1,10 @@
 import 'package:breathin_app/routes/app_route_config.dart';
-import 'package:breathin_app/routes/routes.dart';
-import 'package:breathin_app/screens/auth/login/bloc/login_bloc.dart';
+import 'package:breathin_app/screens/auth/auth/bloc/auth_bloc.dart';
 import 'package:breathin_app/services/firebase/firebase_auth.dart';
-import 'package:breathin_app/services/shared-pref/shared-pref-service.dart';
 import 'package:breathin_app/utilities/helpers/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

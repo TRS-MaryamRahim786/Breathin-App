@@ -1,19 +1,17 @@
 import 'package:breathin_app/routes/routes.dart';
 import 'package:breathin_app/services/firebase/firebase_auth.dart';
-import 'package:breathin_app/services/firebase/firestore_base_service.dart';
 import 'package:breathin_app/services/shared-pref/shared-pref-service.dart';
-import 'package:breathin_app/widgets/custom_snackBar.dart';
 import 'package:breathin_app/widgets/no_internet_dialog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../services/internet_connectivity/internet_connectivity.dart';
 import '../model/user_model.dart';
 
-part 'login_event.dart';
-part 'login_state.dart';
+part 'auth_event.dart';
+part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   /// =============== [Text Editing Controllers]
@@ -37,10 +35,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({required this.authService}) : super(AuthInitialState()) {
     on<AuthSubmittedEvent>((event, emit) async {
-      final connectivityResult = await (Connectivity().checkConnectivity());
       if (authKey.currentState!.validate()) {
         if (event.isTermsAndConditionAccepted) {
-          if (connectivityResult != ConnectivityResult.none) {
+          /// Check for actual internet availability
+          bool hasInternet = await hasInternetConnection();
+          if (hasInternet) {
             emit(AuthLoadingState());
             try {
               // Check if user is registered
@@ -54,12 +53,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
                 /// Register the user
                 await authService.registerUser(event.user);
               }
+
+              /// Navigate to Home Screen
               if (event.context.mounted) {
+                _clearControllers();
+
+                /// Handling Signed User Session
                 SharedPrefService.instance.setIsUserLogin(true);
+                emit(AuthSuccessState());
                 _navigateToHome(event.context);
               }
             } catch (e) {
-              print("e: $e");
               SharedPrefService.instance.setIsUserLogin(false);
               emit(AuthFailureState(error: e.toString()));
             }
@@ -79,5 +83,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   /// NAVIGATE IT TO HOME SCREEN
   void _navigateToHome(BuildContext context) {
     context.pushReplacement(Routes.home);
+  }
+
+  /// CLEARING CONTROLLERS AFTER SUCCESS
+  void _clearControllers() {
+    emailController.clear();
+    passwordController.clear();
   }
 }

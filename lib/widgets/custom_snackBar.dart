@@ -1,3 +1,4 @@
+import 'package:breathin_app/utilities/helpers/app_fonts.dart';
 import 'package:breathin_app/utilities/helpers/colors.dart';
 import 'package:breathin_app/widgets/custom_text.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -19,13 +20,14 @@ class CustomSnackBar {
               color: Colors.white,
               size: 22,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Expanded(
               child: CustomText(
                 text: message.isNotEmpty ? message : 'Something went wrong!',
                 color: AppColors.white,
                 fontSize: 13.5,
                 letterSpacing: 1.5,
+                fontFamily: AppFonts.helvetica,
                 maxLines: 3,
               ),
             ),

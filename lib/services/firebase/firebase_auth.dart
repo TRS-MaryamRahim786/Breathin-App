@@ -2,25 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../screens/auth/login/model/user_model.dart';
+import '../../screens/auth/auth/model/user_model.dart';
 
 class FirebaseAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Register user with email and password
+  /// Register user with email and password
   Future<void> registerUser(UserModel user) async {
-    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: user.email,
-      password: user.password,
-    );
-    await _firestore.collection('users').doc(userCredential.user!.email).set({
-      'email': user.email,
-      'language': user.language,
-    });
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: user.email,
+        password: user.password,
+      );
+      await _firestore.collection('users').doc(userCredential.user!.email).set({
+        'email': user.email,
+        'language': user.language,
+      });
+    } catch (e) {
+      throw e.toString() ?? 'An unexpected error occurred. Please try again.';
+    }
   }
 
-  // Method to login user
+  /// Method to login user
   Future<void> loginUser(UserModel user) async {
     try {
       // Attempt to log the user in using email and password

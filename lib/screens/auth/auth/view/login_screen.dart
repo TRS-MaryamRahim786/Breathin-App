@@ -1,11 +1,10 @@
 import 'dart:ui';
 
-import 'package:breathin_app/screens/auth/login/model/user_model.dart';
-import 'package:breathin_app/screens/language/bloc/language_bloc.dart';
 import 'package:breathin_app/utilities/extensions/size_extensions.dart';
 import 'package:breathin_app/utilities/helpers/app_assets.dart';
 import 'package:breathin_app/utilities/helpers/app_fonts.dart';
 import 'package:breathin_app/utilities/helpers/constants.dart';
+import 'package:breathin_app/widgets/basic_circular_progress_indicator.dart';
 import 'package:breathin_app/widgets/custom_divider.dart';
 import 'package:breathin_app/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +17,12 @@ import '../../../../utilities/helpers/validation.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_snackBar.dart';
 import '../../../../widgets/custom_text_field.dart';
-import '../bloc/login_bloc.dart';
+import '../bloc/auth_bloc.dart';
 import '../cubits/terms_cubit.dart';
+import '../model/user_model.dart';
 
 class AuthScreen extends StatefulWidget {
-  AuthScreen({super.key, required this.language});
+  const AuthScreen({super.key, required this.language});
   final String language;
 
   @override
@@ -32,6 +32,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
+    /// AUTH BLOC PROVIDER
     final authBlocProvider = BlocProvider.of<AuthBloc>(context);
 
     ///========= [Responsive Screen Size]
@@ -191,8 +192,6 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ),
                           checkColor: AppColors.white,
-                          // White check/tick color
-
                           fillColor: MaterialStateProperty.resolveWith<Color>(
                               (states) {
                             if (states.contains(MaterialState.selected)) {
@@ -217,7 +216,6 @@ class _AuthScreenState extends State<AuthScreen> {
                     fontWeight: FontWeight.w400,
                     letterSpacing: 1,
                     height: 16.1 / 14.0,
-                    // Line height (16.1px divided by 14px gives the line-height multiplier)
                     maxLines: 3,
                     textAlign: TextAlign.left,
                   ),
@@ -230,8 +228,8 @@ class _AuthScreenState extends State<AuthScreen> {
               listener: (context, state) {
                 /// Success state
                 if (state is AuthSuccessState) {
-                  CustomSnackBar.show(context,
-                      message: state.successMessage, isError: false);
+                  /*        CustomSnackBar.show(context,
+                      message: state.successMessage, isError: false);*/
                 }
 
                 /// Error state
@@ -241,6 +239,12 @@ class _AuthScreenState extends State<AuthScreen> {
                 }
               },
               builder: (context, state) {
+                /// Loading State
+                if (state is AuthLoadingState) {
+                  return const Center(
+                    child: BasicCircularProgressIndicator(),
+                  );
+                }
                 return CustomButton(
                   btnName: 'Continue',
                   textStyle: const TextStyle(
