@@ -37,7 +37,7 @@ class MyAppRouter {
         return MaterialPage(
             child: BlocProvider(
           create: (context) => LanguageBloc(),
-          child: LanguageScreen(),
+          child: const LanguageScreen(),
         ));
       },
     ),
@@ -68,7 +68,7 @@ class MyAppRouter {
             providers: [
               BlocProvider(create: (_) => HomeBloc(FirebaseAuthService())),
             ],
-            child: DashboardScreen(),
+            child: const DashboardScreen(),
           ),
         );
       },
