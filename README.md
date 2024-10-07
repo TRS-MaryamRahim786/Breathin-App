@@ -19,7 +19,12 @@ Breathin App is a Flutter application that allows users to select their preferre
    - **Flutter SDK:** Install Flutter
    - **Firebase Account:** Create Firebase Project
 
+
 2. **Clone the repository:**
-   ```bash
-   git clone https://github.com/TRS-MaryamRahim786/Breathin-App.git
-   cd Breathin-App
+  
+   - **git clone https://github.com/TRS-MaryamRahim786/Breathin-App.git
+   - ** cd Breathin-App
+   
+
+3.**Creating APK:**
+- ** Run the command : "flutter build apk --split-per-abi"

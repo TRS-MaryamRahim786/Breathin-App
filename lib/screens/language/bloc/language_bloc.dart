@@ -13,9 +13,9 @@ class LanguageBloc extends Bloc<LanguageEvent, LanguageState> {
 
   final FocusNode focusNode = FocusNode();
   List<LanguageModel> languages = [
-    LanguageModel("English", AppAssets.englishFlag),
-    LanguageModel("French", AppAssets.frenchFlag),
-    LanguageModel("Spanish", AppAssets.spanishFlag),
+    LanguageModel("English", AppAssets.englishFlagImage),
+    LanguageModel("French", AppAssets.frenchFlagImage),
+    LanguageModel("Spanish", AppAssets.spanishFlagImage),
   ];
   LanguageModel? selectedLanguage;
 

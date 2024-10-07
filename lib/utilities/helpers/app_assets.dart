@@ -23,4 +23,7 @@ abstract class AppAssets {
   static const homeBg = 'assets/images/home.jpeg';
   static const landingBg = 'assets/images/landing_bg.jpeg';
   static const imageReplaceHolder = 'assets/images/image_replaceholder.png';
+  static const englishFlagImage = 'assets/images/english_flag_png.png';
+  static const frenchFlagImage = 'assets/images/french_flag_png.png';
+  static const spanishFlagImage = 'assets/images/spanish_flag_png.png';
 }

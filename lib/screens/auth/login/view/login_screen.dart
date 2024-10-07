@@ -64,38 +64,42 @@ class _AuthScreenState extends State<AuthScreen> {
                       right: width * 0.07,
                       top: height * 0.04,
                       bottom: height * 0.1),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomText(
-                        text: 'Welcome to Breathin',
-                        color: AppColors.white,
-                        fontSize: 24.5,
-                        fontFamily: AppFonts.raglika,
-                        fontWeight: FontWeight.normal,
-                        letterSpacing: 1.5,
-                        maxLines: 3,
-                        height: 34.4 / 24,
-                        // Line height (34.4px) divided by font size (24px)
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        context.sizeBoxHeight(0.04),
+                        const CustomText(
+                          text: 'Welcome to Breathin',
+                          color: AppColors.white,
+                          fontSize: 24.5,
+                          fontFamily: AppFonts.raglika,
+                          fontWeight: FontWeight.normal,
+                          letterSpacing: 1.5,
+                          maxLines: 3,
+                          height: 34.4 / 24,
+                          // Line height (34.4px) divided by font size (24px)
 
-                        textAlign: TextAlign.left,
-                      ),
-                      context.sizeBoxHeight(0.01),
-                      const CustomText(
-                        text: 'Please enter your details to continue.',
-                        color: AppColors.white8,
-                        fontSize: 16,
-                        fontFamily: AppFonts.helvetica,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 1,
-                        maxLines: 3,
-                        height: 25.65 / 16,
-                        textAlign: TextAlign.left,
-                      ),
-                      context.sizeBoxHeight(0.05),
-                      _authFormWidget(authBlocProvider, height, width, context),
-                    ],
+                          textAlign: TextAlign.left,
+                        ),
+                        context.sizeBoxHeight(0.01),
+                        const CustomText(
+                          text: 'Please enter your details to continue.',
+                          color: AppColors.white8,
+                          fontSize: 16,
+                          fontFamily: AppFonts.helvetica,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 1,
+                          maxLines: 3,
+                          height: 25.65 / 16,
+                          textAlign: TextAlign.left,
+                        ),
+                        context.sizeBoxHeight(0.06),
+                        _authFormWidget(
+                            authBlocProvider, height, width, context),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -106,6 +110,7 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  /// FORM WIDGET
   Widget _authFormWidget(AuthBloc authBlocProvider, double height, double width,
       BuildContext context) {
     return Form(
@@ -159,15 +164,18 @@ class _AuthScreenState extends State<AuthScreen> {
                 color: AppColors.black,
                 fontSize: 15.5,
                 fontFamily: AppFonts.helvetica,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
                 letterSpacing: 1.5,
                 maxLines: 3,
                 height: 16.1 / 14.0,
                 textAlign: TextAlign.right,
               ),
             ),
+
+            /// Terms and Conditions
             Padding(
-              padding: EdgeInsets.symmetric(vertical: height * 0.01),
+              padding:
+                  EdgeInsets.only(top: height * 0.03, bottom: height * 0.008),
               child: Row(
                 children: [
                   BlocBuilder<TermsCubit, bool>(
@@ -206,7 +214,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     color: AppColors.black,
                     fontSize: 15.5,
                     fontFamily: AppFonts.helvetica,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w400,
                     letterSpacing: 1,
                     height: 16.1 / 14.0,
                     // Line height (16.1px divided by 14px gives the line-height multiplier)
@@ -216,6 +224,8 @@ class _AuthScreenState extends State<AuthScreen> {
                 ],
               ),
             ),
+
+            /// Continue Button
             BlocConsumer<AuthBloc, AuthState>(
               listener: (context, state) {
                 /// Success state
@@ -245,9 +255,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     final user = UserModel(
                       email: authBlocProvider.emailController.text,
                       password: authBlocProvider.passwordController.text,
-                      language:
-                          context.read<LanguageBloc>().selectedLanguage?.name ??
-                              "",
+                      language: widget.language,
                     );
                     authBlocProvider.add(AuthSubmittedEvent(
                         user: user,
@@ -265,7 +273,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 Expanded(child: CustomDivider()),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-                  child: CustomText(
+                  child: const CustomText(
                     text: ' or ',
                     color: AppColors.white,
                     fontSize: 16.5,
@@ -281,45 +289,56 @@ class _AuthScreenState extends State<AuthScreen> {
                 Expanded(child: CustomDivider()),
               ],
             ),
-            context.sizeBoxHeight(0.03),
-            CustomButton(
-              btnName: 'Sign in with Google',
-              btnBoxBorder: Border.all(color: AppColors.black, width: 1),
-              textStyle: const TextStyle(
-                  color: AppColors.black,
-                  fontFamily: AppFonts.helvetica,
-                  fontSize: 16,
-                  height: 16.1 / 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.4),
-              prefixIcon: AppAssets.google,
-              isPrefixIcon: true,
-              btnColor: AppColors.halfWhite,
-              onTap: () {
-                context.goNamed(Routes.login);
-              },
-              btnRadius: 14,
-            ),
-            context.sizeBoxHeight(0.02),
-            CustomButton(
-              btnName: 'Sign in with Google',
-              btnBoxBorder: Border.all(color: AppColors.black, width: 1),
-              textStyle: const TextStyle(
-                  color: AppColors.black,
-                  fontFamily: AppFonts.helvetica,
-                  fontSize: 16,
-                  height: 16.1 / 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.4),
-              prefixIcon: AppAssets.apple,
-              isPrefixIcon: true,
-              btnColor: AppColors.halfWhite,
-              onTap: () {
-                context.goNamed(Routes.login);
-              },
-              btnRadius: 14,
-            ),
+
+            /// Social Buttons
+            _socialButton(),
           ],
         ));
+  }
+
+  /// SOCIAL BUTTONS WIDGET
+  Widget _socialButton() {
+    return Column(
+      children: [
+        context.sizeBoxHeight(0.02),
+        CustomButton(
+          btnName: 'Sign in with Google',
+          btnBoxBorder: Border.all(color: AppColors.black, width: 1),
+          textStyle: const TextStyle(
+              color: AppColors.black,
+              fontFamily: AppFonts.helvetica,
+              fontSize: 16,
+              height: 16.1 / 14,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.4),
+          prefixIcon: AppAssets.google,
+          isPrefixIcon: true,
+          btnColor: AppColors.halfWhite,
+          onTap: () {
+            context.goNamed(Routes.login);
+          },
+          btnRadius: 14,
+        ),
+        context.sizeBoxHeight(0.02),
+        CustomButton(
+          btnName: 'Sign in with Google',
+          btnBoxBorder: Border.all(color: AppColors.black, width: 1),
+          textStyle: const TextStyle(
+              color: AppColors.black,
+              fontFamily: AppFonts.helvetica,
+              fontSize: 16,
+              height: 16.1 / 14,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.4),
+          prefixIcon: AppAssets.apple,
+          isPrefixIcon: true,
+          btnColor: AppColors.halfWhite,
+          onTap: () {
+            context.goNamed(Routes.login);
+          },
+          btnRadius: 14,
+        ),
+      ],
+    );
   }
 }

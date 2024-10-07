@@ -4,7 +4,7 @@ import '../utilities/helpers/colors.dart';
 
 class CustomDivider extends StatelessWidget {
   Color? color = AppColors.white;
-  double? width = 1;
+  double? width = 2;
   CustomDivider({super.key, this.color, this.width});
 
   @override

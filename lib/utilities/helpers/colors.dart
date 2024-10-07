@@ -27,6 +27,7 @@ abstract class AppColors {
   static const Color grey157 = Color(0xFF9D9D9D);
   static const Color divider = Color(0xFFFFFFB2);
   static const Color grey = Color(0xFF9D9D9D);
+  static const Color bgColor = Color(0xFFF4F5F6);
 
 // Neutral Colors
 
