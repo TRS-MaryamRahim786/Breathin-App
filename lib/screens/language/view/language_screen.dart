@@ -121,7 +121,7 @@ class LanguageScreen extends StatelessWidget {
               letterSpacing: 1),
           btnColor: AppColors.buttonColor,
           onTap: () {
-            context.pushNamed(Routes.login,
+            context.go(Routes.login,
                 extra: languageBlocProvider.selectedLanguage?.name);
           },
           btnRadius: 14,

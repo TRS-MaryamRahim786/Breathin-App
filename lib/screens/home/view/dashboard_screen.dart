@@ -27,6 +27,7 @@ class DashboardScreen extends StatelessWidget {
       length: 3, // Number of tabs
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const CustomText(
             text: breathin,
             color: AppColors.black,
