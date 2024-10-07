@@ -13,24 +13,25 @@ import 'package:go_router/go_router.dart';
 import '../../../utilities/helpers/colors.dart';
 import '../../../widgets/custom_button.dart';
 
-
-class LandindScreen extends StatefulWidget {
-  const LandindScreen({super.key});
+class LandingScreen extends StatefulWidget {
+  const LandingScreen({super.key});
 
   @override
-  State<LandindScreen> createState() => _LandindScreenState();
+  State<LandingScreen> createState() => _LandingScreenState();
 }
 
-class _LandindScreenState extends State<LandindScreen> {
+class _LandingScreenState extends State<LandingScreen> {
   @override
   Widget build(BuildContext context) {
     ///========= [Responsive Screen Size]
     screenSize = MediaQuery.sizeOf(context);
     final width = screenSize.width;
     final height = screenSize.height;
+
+    /// ==================== [ Checking User Session ]
     SharedPrefService.instance.getIsUserLogin().then((value) {
       if (value) {
-        if(!context.mounted) return;
+        if (!context.mounted) return;
         context.go(Routes.home);
       }
     });
@@ -49,7 +50,8 @@ class _LandindScreenState extends State<LandindScreen> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
               child: Container(
-                color: AppColors.halfWhite.withOpacity(0.01), // Optional overlay color
+                color: AppColors.halfWhite
+                    .withOpacity(0.01), // Optional overlay color
                 alignment: Alignment.center,
                 child: Stack(
                   children: [
@@ -59,12 +61,19 @@ class _LandindScreenState extends State<LandindScreen> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Colors.transparent,  // Transparent at the top
-                            Colors.white.withOpacity(0.2), // Semi-transparent in the middle
-                            Colors.white.withOpacity(0.5), // Semi-transparent in the middle
-                            Colors.white,  // Solid white at the bottom
+                            Colors.transparent, // Transparent at the top
+                            Colors.white.withOpacity(
+                                0.2), // Semi-transparent in the middle
+                            Colors.white.withOpacity(
+                                0.5), // Semi-transparent in the middle
+                            Colors.white, // Solid white at the bottom
                           ],
-                          stops: [0.0, 0.6, 0.7, 1.0], // Control the transition points
+                          stops: [
+                            0.0,
+                            0.6,
+                            0.7,
+                            1.0
+                          ], // Control the transition points
                         ),
                       ),
                     ),
@@ -79,7 +88,7 @@ class _LandindScreenState extends State<LandindScreen> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const CustomText(
-                            text: 'Welcome to Breathin',
+                            text: 'Welcome to $breathin',
                             color: AppColors.black,
                             fontSize: 24.5,
                             fontFamily: AppFonts.raglika,
@@ -91,7 +100,7 @@ class _LandindScreenState extends State<LandindScreen> {
                           ),
                           context.sizeBoxHeight(0.001),
                           const CustomText(
-                            text: 'Take care of your hives through Breathin',
+                            text: 'Take care of your hives through $breathin',
                             color: AppColors.black,
                             fontSize: 14,
                             fontFamily: AppFonts.helvetica,
@@ -104,7 +113,12 @@ class _LandindScreenState extends State<LandindScreen> {
                           context.sizeBoxHeight(0.05),
                           CustomButton(
                             btnName: 'Get Started',
-                            textStyle: const TextStyle(color: AppColors.black, fontFamily: AppFonts.helvetica, fontSize: 18, fontWeight: FontWeight.w700, letterSpacing: 1),
+                            textStyle: const TextStyle(
+                                color: AppColors.black,
+                                fontFamily: AppFonts.helvetica,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1),
                             btnColor: AppColors.buttonColor,
                             onTap: () {
                               context.push(Routes.language);

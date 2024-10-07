@@ -1,5 +1,5 @@
 import 'package:breathin_app/routes/app_route_config.dart';
-import 'package:breathin_app/screens/auth/auth/bloc/auth_bloc.dart';
+import 'package:breathin_app/screens/auth/bloc/auth_bloc.dart';
 import 'package:breathin_app/services/firebase/firebase_auth.dart';
 import 'package:breathin_app/utilities/helpers/constants.dart';
 import 'package:easy_localization/easy_localization.dart';

@@ -11,7 +11,7 @@ import '../../../widgets/custom_text.dart';
 import '../bloc/home_bloc.dart';
 import '../model/item_model.dart';
 
-/// FeaturedCard widget for each item
+/// Featured Card widget for each item
 class FeaturedCard extends StatelessWidget {
   final FeaturedItem item;
   final VoidCallback onFavoriteToggle;
@@ -19,7 +19,8 @@ class FeaturedCard extends StatelessWidget {
   HomeBloc homeBlocProvider;
 
   FeaturedCard(
-      {required this.item,
+      {super.key,
+      required this.item,
       required this.onFavoriteToggle,
       required this.homeBlocProvider});
 
@@ -35,6 +36,7 @@ class FeaturedCard extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
+            /// Play Audio
             homeBlocProvider.playAudio(item.musicLink);
           },
           child: Container(

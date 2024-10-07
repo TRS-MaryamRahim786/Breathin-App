@@ -2,7 +2,6 @@ import 'package:breathin_app/routes/routes.dart';
 import 'package:breathin_app/services/firebase/firebase_auth.dart';
 import 'package:breathin_app/services/shared-pref/shared-pref-service.dart';
 import 'package:breathin_app/widgets/no_internet_dialog.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final FirebaseAuthService authService;
 
-  /// Password Toggle
+  /// =========================== [ Password Toggle ]
   void togglePasswordVisibility() {
     if (state is PasswordVisible) {
       emit(PasswordHidden());
@@ -68,11 +67,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               emit(AuthFailureState(error: e.toString()));
             }
           } else {
+            /// No Internet Widget
             if (event.context.mounted) {
               showNoInternetDialog(event.context);
             }
           }
         } else {
+          /// Error State
           emit(AuthFailureState(
               error: 'Please accept the terms and conditions.'));
         }

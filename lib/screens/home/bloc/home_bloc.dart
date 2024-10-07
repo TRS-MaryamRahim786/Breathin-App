@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:breathin_app/routes/routes.dart';
@@ -13,32 +15,40 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  /// ===============================   [ Text Editing Controller ]
   TextEditingController homeSearchBarController = TextEditingController();
+
+  /// ===============================   [ Focus Node ]
+
   final FocusNode focusNode = FocusNode();
-  AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer();
   final FirebaseAuthService authService;
 
   HomeBloc(this.authService) : super(HomeInitialState()) {
+    /// =================== [ SIGN OUT EVENT ]
     on<HomeSignOutEvent>((event, emit) {
       authService.signOut();
+      _navigateToLanguageScreen(event.context);
 
-      _navigateTolanguageScreen(event.context);
+      /// ========================= [ Deleting User Session ]
       SharedPrefService.instance.setIsUserLogin(false);
     });
   }
 
+  /// Getting Image path
   Future<String> getImageUrl(String filePath) async {
-    // Replace 'filePath' with the full path to your image in Firebase Storage
+    /// Replace 'filePath' with the full path to your image in Firebase Storage
     String path = '';
     try {
       Reference ref = FirebaseStorage.instance.refFromURL(filePath);
       path = await ref.getDownloadURL();
     } catch (e) {
-      print('Error occurred: $e');
+      log('Error occurred while getting getImageUrl: $e');
     }
     return path;
   }
 
+  /// Audio Play/Stop method
   playAudio(String audioLink) async {
     if (_audioPlayer.state == PlayerState.playing) {
       _audioPlayer.stop();
@@ -47,21 +57,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _audioPlayer.play(UrlSource(link));
   }
 
-  Future<void> _pauseAudio() async {
-    await _audioPlayer.pause();
-  }
-
-  Future<void> _stopAudio() async {
-    await _audioPlayer.stop();
-  }
-
   @override
   Future<void> close() {
     _audioPlayer.dispose();
     return super.close();
   }
 
-  void _navigateTolanguageScreen(BuildContext context) {
+  /// Navigate to Language Screen
+  void _navigateToLanguageScreen(BuildContext context) {
     context.go(Routes.landing);
+  }
+
+  ///Not in User
+  Future<void> _pauseAudio() async {
+    await _audioPlayer.pause();
+  }
+
+  ///Not in User
+  Future<void> _stopAudio() async {
+    await _audioPlayer.stop();
   }
 }

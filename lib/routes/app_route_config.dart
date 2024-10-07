@@ -1,13 +1,14 @@
 import 'package:breathin_app/routes/routes.dart';
-import 'package:breathin_app/screens/auth/auth/bloc/auth_bloc.dart';
-import 'package:breathin_app/screens/auth/auth/cubits/terms_cubit.dart';
-import 'package:breathin_app/screens/auth/auth/view/login_screen.dart';
+import 'package:breathin_app/screens/auth/bloc/auth_bloc.dart';
+import 'package:breathin_app/screens/auth/cubits/terms_cubit.dart';
+import 'package:breathin_app/screens/auth/view/auth_screen.dart';
 import 'package:breathin_app/screens/home/view/dashboard_screen.dart';
 import 'package:breathin_app/screens/landing_page/view/landing_screen.dart';
 import 'package:breathin_app/screens/language/view/language_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import '../screens/home/bloc/home_bloc.dart';
 import '../screens/language/bloc/language_bloc.dart';
 import '../services/firebase/firebase_auth.dart';
@@ -26,7 +27,7 @@ class MyAppRouter {
       path: Routes.landing,
       name: Routes.landing,
       pageBuilder: (BuildContext context, GoRouterState state) {
-        return const MaterialPage(child: LandindScreen());
+        return const MaterialPage(child: LandingScreen());
       },
     ),
     GoRoute(

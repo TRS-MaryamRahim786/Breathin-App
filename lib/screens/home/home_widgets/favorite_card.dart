@@ -11,7 +11,7 @@ import '../../../widgets/custom_text.dart';
 import '../bloc/home_bloc.dart';
 import '../model/item_model.dart';
 
-/// FeaturedCard widget for each item
+/// Featured Card widget for each item
 class FavoriteCard extends StatelessWidget {
   final FeaturedItem item;
   final VoidCallback onFavoriteToggle;
@@ -19,7 +19,8 @@ class FavoriteCard extends StatelessWidget {
   HomeBloc homeBlocProvider;
 
   FavoriteCard(
-      {required this.item,
+      {super.key,
+      required this.item,
       required this.onFavoriteToggle,
       required this.homeBlocProvider});
 
@@ -36,6 +37,7 @@ class FavoriteCard extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
+              /// Play Audio
               homeBlocProvider.playAudio(item.musicLink);
             },
             child: Container(
@@ -76,6 +78,8 @@ class FavoriteCard extends StatelessWidget {
                               }),
                         ),
                       ),
+
+                      /// Favorite Widget
                       Positioned(
                         top: height * 0.0,
                         right: width * 0.01,

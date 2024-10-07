@@ -16,7 +16,7 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// HOME BLOC PROVIDER
+    /// ========================== [ HOME BLOC PROVIDER ]
     final homeBlocProvider = BlocProvider.of<HomeBloc>(context);
 
     ///========= [Responsive Screen Size]
@@ -28,7 +28,7 @@ class DashboardScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const CustomText(
-            text: 'Breathin',
+            text: breathin,
             color: AppColors.black,
             fontSize: 24.5,
             fontFamily: AppFonts.raglika,
@@ -64,6 +64,7 @@ class DashboardScreen extends StatelessWidget {
         ),
         body: const TabBarView(
           children: [
+            /// Home Screen
             Center(child: HomeScreen()),
             Center(
               child: CustomText(
@@ -101,8 +102,8 @@ class DashboardScreen extends StatelessWidget {
               color: AppColors.white),
           child: TabBar(
             indicatorColor:
-                Colors.white, // Color of the tab indicator (underline)
-            dividerColor: Colors.white,
+                AppColors.white, // Color of the tab indicator (underline)
+            dividerColor: AppColors.white,
             tabs: [
               Tab(icon: SvgPicture.asset(AppAssets.homeIcon)),
               Tab(icon: SvgPicture.asset(AppAssets.explore)),
